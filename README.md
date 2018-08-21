@@ -7,7 +7,7 @@
 
 Please go to the release page to download the package.
 
-Import the package into your own proejct, simply drag the "NotificationVR" prefab to the scene and, in your own script call "NotificationVR.Instance.Notfiy([string])" to trigger plain text notifications. 
+Import the package into your own proejct, simply drag the "NotificationVR" prefab to the scene and, in your own script call "SimpleNoteVR.Instance.Notfiy([string])" to trigger plain text notifications. 
 
 Features:
 

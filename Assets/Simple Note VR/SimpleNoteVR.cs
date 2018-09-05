@@ -15,8 +15,11 @@ public class SimpleNoteVR : MonoBehaviour
     public Color TextColor = Color.white;
     public Color FrameColor = Color.white;
     public Font TextFont;
-    [Range(0.4f, 1f), Header("Distance to Camera")]
-    public float Multiplier;
+    [Range(0.4f, 5f), Header("Distance to Camera")]
+    public float DistanceMultiplier = 0.4f;
+
+    [Range(1f, 30f), Header("Character Size")]
+    public float CharacterSizeMultiplier = 1f;
 
     #region Private Variables
     private Camera MainCam;
@@ -24,6 +27,9 @@ public class SimpleNoteVR : MonoBehaviour
     private Rigidbody rigid;
     private SpriteRenderer BorderSprite;
     private Coroutine Cached;
+
+    private float DistanceCached;
+    private float CharacterSizeCached;
     #endregion
 
     #region Singleton build-ups
@@ -60,6 +66,8 @@ public class SimpleNoteVR : MonoBehaviour
 
         BorderSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         BorderSprite.color = FrameColor;
+
+        CharacterSizeCached = tmesh.characterSize;
     }
 
     /// <summary>
@@ -75,13 +83,14 @@ public class SimpleNoteVR : MonoBehaviour
         }
 
         //Calculate position to appear
-        transform.position = MainCam.transform.position + MainCam.transform.forward * Multiplier;
+        transform.position = MainCam.transform.position + MainCam.transform.forward * DistanceMultiplier;
         transform.rotation = Quaternion.LookRotation(transform.position - MainCam.transform.position);
 
         //Calculate border length to match word length
-        BorderSprite.size = new Vector2((words.Length) / 30f, 0.1f);
+        BorderSprite.size = new Vector2((words.Length * CharacterSizeMultiplier) / 30f, 0.1f * CharacterSizeMultiplier);
 
         tmesh.text = words;
+        tmesh.characterSize = CharacterSizeCached * CharacterSizeMultiplier;
 
         Cached = StartCoroutine(Recycle(1.5f, 2f));
     }
@@ -119,5 +128,15 @@ public class SimpleNoteVR : MonoBehaviour
         }
         tmesh.text = "";
         BorderSprite.size = Vector2.zero;
+    }
+
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SimpleNoteVR.Instance.Notify("Testing this it");
+        }
     }
 }

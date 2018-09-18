@@ -84,7 +84,10 @@ MonoBehaviour:
   TextColor: {r: 1, g: 1, b: 1, a: 1}
   FrameColor: {r: 1, g: 1, b: 1, a: 1}
   TextFont: {fileID: 12800000, guid: c222d3f01391cb649a11577471be4e18, type: 3}
-  Multiplier: 0.85
+  BackgroundSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  DistanceMultiplier: 0.4
+  CharacterSizeMultiplier: 1
+  WidthMultiplier: 1
 --- !u!212 &212818522747953360
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -94,9 +97,11 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 64ac633cf3eb83f46badf4d117ea8320, type: 2}
   m_StaticBatchInfo:
@@ -109,6 +114,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

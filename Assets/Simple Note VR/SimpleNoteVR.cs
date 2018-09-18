@@ -15,11 +15,16 @@ public class SimpleNoteVR : MonoBehaviour
     public Color TextColor = Color.white;
     public Color FrameColor = Color.white;
     public Font TextFont;
+    public Sprite BackgroundSprite;
+
     [Range(0.4f, 5f), Header("Distance to Camera")]
     public float DistanceMultiplier = 0.4f;
 
     [Range(1f, 30f), Header("Character Size")]
     public float CharacterSizeMultiplier = 1f;
+
+    [Range(1f, 10f), Header("Background Width Multiplier")]
+    public float WidthMultiplier = 1f;
 
     #region Private Variables
     private Camera MainCam;
@@ -65,6 +70,10 @@ public class SimpleNoteVR : MonoBehaviour
         GetComponent<MeshRenderer>().material = TextFont.material;
 
         BorderSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        if (BackgroundSprite != null)
+        {
+            BorderSprite.sprite = BackgroundSprite;
+        }
         BorderSprite.color = FrameColor;
 
         CharacterSizeCached = tmesh.characterSize;
@@ -87,7 +96,7 @@ public class SimpleNoteVR : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(transform.position - MainCam.transform.position);
 
         //Calculate border length to match word length
-        BorderSprite.size = new Vector2((words.Length * CharacterSizeMultiplier) / 30f, 0.1f * CharacterSizeMultiplier);
+        BorderSprite.size = new Vector2((words.Length * CharacterSizeMultiplier) / 30f, 0.1f * CharacterSizeMultiplier * WidthMultiplier);
 
         tmesh.text = words;
         tmesh.characterSize = CharacterSizeCached * CharacterSizeMultiplier;
@@ -132,11 +141,11 @@ public class SimpleNoteVR : MonoBehaviour
 
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SimpleNoteVR.Instance.Notify("Testing this it");
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        SimpleNoteVR.Instance.Notify("Testisdadsdafeagew ffrfderare adedaewdewadng this it");
+    //    }
+    //}
 }

@@ -306,11 +306,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114947602997358680, guid: 8370767263316394fb259faa513e3b2c,
-        type: 2}
-      propertyPath: DistanceMultiplier
-      value: 0.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8370767263316394fb259faa513e3b2c, type: 2}
   m_IsPrefabParent: 0

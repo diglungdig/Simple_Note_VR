@@ -35,6 +35,8 @@ public class SimpleNoteVR : MonoBehaviour
 
     private float DistanceCached;
     private float CharacterSizeCached;
+
+    private bool Notify_Holding = false;
     #endregion
 
     #region Singleton build-ups
@@ -83,7 +85,7 @@ public class SimpleNoteVR : MonoBehaviour
     /// Call this function to trigger notification
     /// </summary>
     /// <param name="words"></param>
-    public void Notify(string words)
+    public void Notify(string words, float lingeringTime)
     {
         if (Cached != null)
         {
@@ -101,7 +103,47 @@ public class SimpleNoteVR : MonoBehaviour
         tmesh.text = words;
         tmesh.characterSize = CharacterSizeCached * CharacterSizeMultiplier;
 
-        Cached = StartCoroutine(Recycle(1.5f, 2f));
+        Cached = StartCoroutine(Recycle(lingeringTime, 2f));
+    }
+
+    /// <summary>
+    /// Pop out a notifcation and hold it
+    /// </summary>
+    /// <param name="words"></param>
+    public void Notify_Hold(string words)
+    {
+        if (Cached != null)
+        {
+            StopCoroutine(Cached);
+            ResetValues();
+        }
+        //Calculate position to appear
+        transform.position = MainCam.transform.position + MainCam.transform.forward * DistanceMultiplier;
+        transform.rotation = Quaternion.LookRotation(transform.position - MainCam.transform.position);
+
+        //Calculate border length to match word length
+        BorderSprite.size = new Vector2((words.Length * CharacterSizeMultiplier) / 30f, 0.1f * CharacterSizeMultiplier * WidthMultiplier);
+
+        tmesh.text = words;
+        tmesh.characterSize = CharacterSizeCached * CharacterSizeMultiplier;
+
+        Notify_Holding = true;
+    }
+
+    /// <summary>
+    /// Release the held notification
+    /// </summary>
+    public void Notify_Release()
+    {
+        if (Notify_Holding)
+        {
+            Cached = StartCoroutine(Recycle(0f, 2f));
+        }
+        else
+        {
+            Debug.Log("Not holding: no need to release");
+        }
+
     }
 
     /// <summary>
@@ -116,7 +158,7 @@ public class SimpleNoteVR : MonoBehaviour
 
         rigid = gameObject.AddComponent<Rigidbody>();
         rigid.AddForce(Vector3.up * 1.5f, ForceMode.Impulse);
-        rigid.AddTorque(Vector3.left, ForceMode.Impulse);
+        rigid.AddTorque(Random.onUnitSphere, ForceMode.Impulse);
         rigid.interpolation = RigidbodyInterpolation.Interpolate;
         rigid.mass = 120f;
         rigid.useGravity = true;
@@ -139,13 +181,16 @@ public class SimpleNoteVR : MonoBehaviour
         BorderSprite.size = Vector2.zero;
     }
 
-
-
     //private void Update()
     //{
     //    if (Input.GetKeyDown(KeyCode.Space))
     //    {
-    //        SimpleNoteVR.Instance.Notify("Testisdadsdafeagew ffrfderare adedaewdewadng this it");
+    //        //SimpleNoteVR.Instance.Notify("Testisdadsdafeagew ffrfderare adedaewdewadng this it");
+    //        Instance.Notify_Hold("Testing hold");
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Backspace))
+    //    {
+    //        Instance.Notify_Release();
     //    }
     //}
 }

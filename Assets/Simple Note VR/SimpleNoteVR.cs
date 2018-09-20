@@ -144,6 +144,8 @@ public class SimpleNoteVR : MonoBehaviour
             Debug.Log("Not holding: no need to release");
         }
 
+        Notify_Holding = false;
+
     }
 
     /// <summary>
